@@ -1,3 +1,4 @@
+import sys
 import ply.lex as lex
 import ply.yacc as yacc
 import tkinter as tk
@@ -129,73 +130,51 @@ def p_escritura(p):
 
 def p_error(p):
     print("Error de sintaxis en '%s'" % p.value)
+#Crear ventana principal
 
-# Definir la función de compilación
-def compilar():
-    # Obtener el código fuente del editor
-    codigo_fuente = editor.get("1.0", tk.END)
-    
-    # Limpiar el cuadro de errores y la ventana de resultados
-    errores.config(text="")
-    resultado.delete("1.0", tk.END)
-    
-    # Compilar el código fuente
-    try:
-        ast = parser.parse(codigo_fuente)
-        resultado.insert(tk.END, "Compilación exitosa.\n")
-        resultado.insert(tk.END, str(ast))
-    except Exception as e:
-        errores.config(text=str(e))
+root = tk.Tk()
+root.title("Analizador Sintáctico")
+#Función para abrir archivo de entrada
 
-# Crear la ventana principal
-ventana = tk.Tk()
-ventana.title("Compilador")
-ventana.geometry("800x600")
+def abrir_archivo():
+    file_path = filedialog.askopenfilename()
+    with open(file_path) as file:
+# Leer archivo y ejecutar análisis sintáctico
+     input_str = file.read()
+    parser.parse(input_str)
+#Crear botón para abrir archivo
 
-# Crear el widget de edición
-editor = tk.Text(ventana, font=("Consolas", 12))
-editor.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+abrir_btn = tk.Button(root, text="Abrir archivo", command=abrir_archivo)
+abrir_btn.pack()
+#Etiqueta para mostrar resultados
 
-# Crear el widget de resultados
-resultado = tk.Text(ventana, font=("Consolas", 12))
-resultado.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+result_label = tk.Label(root, text="")
+result_label.pack()
+#Función para mostrar resultados
 
-# Crear la barra de herramientas
-barra_herramientas = tk.Frame(ventana, bd=1, relief=tk.RAISED)
-abrir_boton = tk.Button(barra_herramientas, text="Abrir", command=lambda: abrir_archivo(editor))
-guardar_boton = tk.Button(barra_herramientas, text="Guardar", command=lambda: guardar_archivo(editor))
-compilar_boton = tk.Button(barra_herramientas, text="Compilar", command=compilar)
-abrir_boton.pack(side=tk.LEFT, padx=2, pady=2)
-guardar_boton.pack(side=tk.LEFT, padx=2, pady=2)
-compilar_boton.pack(side=tk.LEFT, padx=2, pady=2)
-barra_herramientas.pack(side=tk.TOP, fill=tk.X)
+def mostrar_resultados(result):
+    result_label.configure(text=result)
 
-# Crear la barra de estado
-barra_estado = tk.Label(ventana, text="Listo", bd=1, relief=tk.SUNKEN, anchor=tk.W)
-barra_estado.pack(side=tk.BOTTOM, fill=tk.X)
-
-# Crear el cuadro de diálogo de errores
-errores = tk.Label(ventana, text="", fg="red")
-errores.pack(side=tk.BOTTOM, fill=tk.X)
-
-# Crear el lexer y el parser
-lexer = lex.lex()
 parser = yacc.yacc()
+lexer = lex.lex()
+#Función para ejecutar análisis sintáctico
 
-# Definir funciones para abrir y guardar archivos
-def abrir_archivo(editor):
-    archivo = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")])
-    if archivo:
-        editor.delete("1.0", tk.END)
-        with open(archivo, "r") as archivo_fuente:
-            editor.insert(tk.END, archivo_fuente.read())
+def analizar():
+    codigo_fuente = editor.get("1.0", tk.END)
+    # Ejecutar análisis sintáctico
+    try:
+        parser.parse(codigo_fuente)
+        mostrar_resultados("Análisis completado")  # Nueva línea
+    except Exception as e:
+        mostrar_resultados(f"Error de sintaxis: {e}")
+#Crear botón para ejecutar análisis sintáctico
 
-def guardar_archivo(editor):
-    archivo = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")])
-    if archivo:
-        with open(archivo, "w") as archivo_fuente:
-            archivo
-            codigo_fuente = editor.get("1.0", tk.END)
-            archivo_fuente.write(codigo_fuente)
+analizar_btn = tk.Button(root, text="Analizar", command=analizar)
+analizar_btn.pack()
+#Crear cuadro de texto para ingresar código
 
-ventana.mainloop()
+editor = tk.Text(root, height=20, width=50)
+editor.pack()
+#Iniciar loop de la interfaz gráfica
+
+root.mainloop()

@@ -2,92 +2,129 @@ import ply.lex as lex
 import ply.yacc as yacc
 import tkinter as tk
 from tkinter import filedialog
-tokens = (
-    'ID',
-    'NUMBER',
-    'PLUS',
-    'MINUS',
-    'TIMES',
-    'DIVIDE',
-    'LPAREN',
-    'RPAREN',
-)
+reservadas = ['INICIO','FIN','Si','entonces','mientras','hacer','const','var','print']
 
-t_PLUS = r'\+'
-t_MINUS = r'-'
-t_TIMES = r'\*'
-t_DIVIDE = r'/'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
+tokens = reservadas+['ID','Numero','Mas','Menos','Por','Entre','Coma','Punto','Asigna','Dif','Menor','Mayor','Menorigual','Mayorigual','izpar','derpar','puntocoma']
+
+t_Mas=r'\+'
+t_Asigna=r'='
+t_Menos=r'\-'
+t_Por=r'\*'
+t_Entre=r'/'
+t_Coma=r'\,'
+t_Punto=r'\.'
+t_Dif=r'<>'
+t_Menor=r'<'
+t_Mayor=r'>'
+t_Menorigual=r'<='
+t_Mayorigual=r'>='
+t_izpar=r'\('
+t_derpar=r'\)'
+t_puntocoma=r';'
+
 
 def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
-    return t
-
-def t_NUMBER(t):
+	r'[a-zA-Z_][a-zA-Z0-9_]*'
+	if t.value.upper() in reservadas:
+		t.value = t.value.upper()
+		t.type = t.value
+	return t
+def t_Numero(t):
     r'\d+'
     t.value = int(t.value)
     return t
-
-t_ignore = ' \t'
-
 def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
+     r'\n+'
+     t.lexer.lineno += len(t.value)
 def t_error(t):
-    print("Error de sintaxis en el token:", t.value[0])
-    t.lexer.skip(1)
+	print ("caracter ilegal '%s'" %t.value[0])
+	t.lexer.skip(1)
+        
 
-#PASER
-lexer = lex.lex()
+# Definición de gramática
+def p_programa(p):
+    '''programa : INICIO cuerpo FIN'''
+    pass
+def p_expresion_decimal(p):
+    '''
+    expresion : Numero Punto Numero
+    '''
+    p[0] = float(str(p[1]) + '.' + str(p[3]))
 
+def p_cuerpo(p):
+    '''cuerpo : lista_declaraciones'''
+    pass
 
-def p_expression_plus(p):
-    'expression : expression PLUS term'
-    p[0] = p[1] + p[3]
+def p_lista_declaraciones(p):
+    '''lista_declaraciones : lista_declaraciones declaracion
+                           | declaracion'''
+    pass
 
-def p_expression_minus(p):
-    'expression : expression MINUS term'
-    p[0] = p[1] - p[3]
+def p_declaracion(p):
+    '''declaracion : tipo lista_variables puntocoma'''
+    pass
 
-def p_expression_term(p):
-    'expression : term'
-    p[0] = p[1]
+def p_tipo(p):
+    '''tipo : const
+            | var'''
+    pass
 
-def p_term_times(p):
-    'term : term TIMES factor'
-    p[0] = p[1] * p[3]
+def p_lista_variables(p):
+    '''lista_variables : lista_variables Coma ID
+                       | ID'''
+    pass
 
-def p_term_divide(p):
-    'term : term DIVIDE factor'
-    p[0] = p[1] / p[3]
+def p_sentencia(p):
+    '''sentencia : asignacion
+                 | estructura_control
+                 | escritura'''
+    pass
 
-def p_term_factor(p):
-    'term : factor'
-    p[0] = p[1]
+def p_asignacion(p):
+    '''asignacion : ID Asigna expresion puntocoma'''
+    pass
 
-def p_factor_number(p):
-    'factor : NUMBER'
-    p[0] = p[1]
+def p_estructura_control(p):
+    '''estructura_control : sentencia_if
+                          | sentencia_while'''
+    pass
 
-def p_factor_group(p):
-    'factor : LPAREN expression RPAREN'
-    p[0] = p[2]
+def p_sentencia_if(p):
+    '''sentencia_if : Si condicion entonces cuerpo FIN'''
+    pass
+
+def p_sentencia_while(p):
+    '''sentencia_while : mientras condicion hacer cuerpo FIN'''
+    pass
+
+def p_condicion(p):
+    '''condicion : expresion comparador expresion'''
+    pass
+
+def p_comparador(p):
+    '''comparador : Menor
+                  | Mayor
+                  | Menorigual
+                  | Mayorigual
+                  | Dif'''
+    pass
+
+def p_expresion(p):
+    '''expresion : expresion Mas expresion
+                 | expresion Menos expresion
+                 | expresion Por expresion
+                 | expresion Entre expresion
+                 | ID
+                 | Numero
+                 | izpar expresion derpar'''
+    pass
+
+def p_escritura(p):
+    '''escritura : print izpar expresion derpar puntocoma'''
+    pass
 
 def p_error(p):
-    print("Error de sintaxis en la entrada:", p)
-
-parser = yacc.yacc()
-def compilar():
-    # Obtener el código fuente 
-    codigo_fuente = editor.get("1.0", tk.END)
-
-    # Llamar al lexer para generar la lista de tokens
-    lexer.input(codigo_fuente)
-    for token in lexer:
-        print(token)
-
+    print("Error de sintaxis en '%s'" % p.value)
 
 # Definir la función de compilación
 def compilar():

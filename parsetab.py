@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIVIDE ID LPAREN MINUS NUMBER PLUS RPAREN TIMESexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : NUMBERfactor : LPAREN expression RPAREN'
+_lr_signature = 'Asigna Coma Dif Entre FIN ID INICIO Mas Mayor Mayorigual Menor Menorigual Menos Numero Por Punto Si const derpar entonces hacer izpar mientras print puntocoma varprograma : INICIO cuerpo FIN\n    expresion : Numero Punto Numero\n    cuerpo : lista_declaracioneslista_declaraciones : lista_declaraciones declaracion\n                           | declaraciondeclaracion : tipo lista_variables puntocomatipo : const\n            | varlista_variables : lista_variables Coma ID\n                       | IDsentencia : asignacion\n                 | estructura_control\n                 | escrituraasignacion : ID Asigna expresion puntocomaestructura_control : sentencia_if\n                          | sentencia_whilesentencia_if : Si condicion entonces cuerpo FINsentencia_while : mientras condicion hacer cuerpo FINcondicion : expresion comparador expresioncomparador : Menor\n                  | Mayor\n                  | Menorigual\n                  | Mayorigual\n                  | Difexpresion : expresion Mas expresion\n                 | expresion Menos expresion\n                 | expresion Por expresion\n                 | expresion Entre expresion\n                 | ID\n                 | Numero\n                 | izpar expresion derparescritura : print izpar expresion derpar puntocoma'
     
-_lr_action_items = {'NUMBER':([0,5,6,7,8,9,],[4,4,4,4,4,4,]),'LPAREN':([0,5,6,7,8,9,],[5,5,5,5,5,5,]),'$end':([1,2,3,4,11,12,13,14,15,],[0,-3,-6,-7,-1,-2,-4,-5,-8,]),'PLUS':([1,2,3,4,10,11,12,13,14,15,],[6,-3,-6,-7,6,-1,-2,-4,-5,-8,]),'MINUS':([1,2,3,4,10,11,12,13,14,15,],[7,-3,-6,-7,7,-1,-2,-4,-5,-8,]),'RPAREN':([2,3,4,10,11,12,13,14,15,],[-3,-6,-7,15,-1,-2,-4,-5,-8,]),'TIMES':([2,3,4,11,12,13,14,15,],[8,-6,-7,8,8,-4,-5,-8,]),'DIVIDE':([2,3,4,11,12,13,14,15,],[9,-6,-7,9,9,-4,-5,-8,]),}
+_lr_action_items = {'INICIO':([0,],[2,]),'$end':([1,9,],[0,-1,]),'const':([2,4,5,10,13,],[7,7,-5,-4,-6,]),'var':([2,4,5,10,13,],[8,8,-5,-4,-6,]),'FIN':([3,4,5,10,13,],[9,-3,-5,-4,-6,]),'ID':([6,7,8,14,],[12,-7,-8,15,]),'puntocoma':([11,12,15,],[13,-10,-9,]),'Coma':([11,12,15,],[14,-10,-9,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,5,],[1,10,]),'term':([0,5,6,7,],[2,2,11,12,]),'factor':([0,5,6,7,8,9,],[3,3,3,3,13,14,]),}
+_lr_goto_items = {'programa':([0,],[1,]),'cuerpo':([2,],[3,]),'lista_declaraciones':([2,],[4,]),'declaracion':([2,4,],[5,10,]),'tipo':([2,4,],[6,6,]),'lista_variables':([6,],[11,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,13 +26,37 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> expression","S'",1,None,None,None),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','compyv2.py',47),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','compyv2.py',51),
-  ('expression -> term','expression',1,'p_expression_term','compyv2.py',55),
-  ('term -> term TIMES factor','term',3,'p_term_times','compyv2.py',59),
-  ('term -> term DIVIDE factor','term',3,'p_term_divide','compyv2.py',63),
-  ('term -> factor','term',1,'p_term_factor','compyv2.py',67),
-  ('factor -> NUMBER','factor',1,'p_factor_number','compyv2.py',71),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_group','compyv2.py',75),
+  ("S' -> programa","S'",1,None,None,None),
+  ('programa -> INICIO cuerpo FIN','programa',3,'p_programa','compyv2.py',46),
+  ('expresion -> Numero Punto Numero','expresion',3,'p_expresion_decimal','compyv2.py',50),
+  ('cuerpo -> lista_declaraciones','cuerpo',1,'p_cuerpo','compyv2.py',55),
+  ('lista_declaraciones -> lista_declaraciones declaracion','lista_declaraciones',2,'p_lista_declaraciones','compyv2.py',59),
+  ('lista_declaraciones -> declaracion','lista_declaraciones',1,'p_lista_declaraciones','compyv2.py',60),
+  ('declaracion -> tipo lista_variables puntocoma','declaracion',3,'p_declaracion','compyv2.py',64),
+  ('tipo -> const','tipo',1,'p_tipo','compyv2.py',68),
+  ('tipo -> var','tipo',1,'p_tipo','compyv2.py',69),
+  ('lista_variables -> lista_variables Coma ID','lista_variables',3,'p_lista_variables','compyv2.py',73),
+  ('lista_variables -> ID','lista_variables',1,'p_lista_variables','compyv2.py',74),
+  ('sentencia -> asignacion','sentencia',1,'p_sentencia','compyv2.py',78),
+  ('sentencia -> estructura_control','sentencia',1,'p_sentencia','compyv2.py',79),
+  ('sentencia -> escritura','sentencia',1,'p_sentencia','compyv2.py',80),
+  ('asignacion -> ID Asigna expresion puntocoma','asignacion',4,'p_asignacion','compyv2.py',84),
+  ('estructura_control -> sentencia_if','estructura_control',1,'p_estructura_control','compyv2.py',88),
+  ('estructura_control -> sentencia_while','estructura_control',1,'p_estructura_control','compyv2.py',89),
+  ('sentencia_if -> Si condicion entonces cuerpo FIN','sentencia_if',5,'p_sentencia_if','compyv2.py',93),
+  ('sentencia_while -> mientras condicion hacer cuerpo FIN','sentencia_while',5,'p_sentencia_while','compyv2.py',97),
+  ('condicion -> expresion comparador expresion','condicion',3,'p_condicion','compyv2.py',101),
+  ('comparador -> Menor','comparador',1,'p_comparador','compyv2.py',105),
+  ('comparador -> Mayor','comparador',1,'p_comparador','compyv2.py',106),
+  ('comparador -> Menorigual','comparador',1,'p_comparador','compyv2.py',107),
+  ('comparador -> Mayorigual','comparador',1,'p_comparador','compyv2.py',108),
+  ('comparador -> Dif','comparador',1,'p_comparador','compyv2.py',109),
+  ('expresion -> expresion Mas expresion','expresion',3,'p_expresion','compyv2.py',113),
+  ('expresion -> expresion Menos expresion','expresion',3,'p_expresion','compyv2.py',114),
+  ('expresion -> expresion Por expresion','expresion',3,'p_expresion','compyv2.py',115),
+  ('expresion -> expresion Entre expresion','expresion',3,'p_expresion','compyv2.py',116),
+  ('expresion -> ID','expresion',1,'p_expresion','compyv2.py',117),
+  ('expresion -> Numero','expresion',1,'p_expresion','compyv2.py',118),
+  ('expresion -> izpar expresion derpar','expresion',3,'p_expresion','compyv2.py',119),
+  ('escritura -> print izpar expresion derpar puntocoma','escritura',5,'p_escritura','compyv2.py',123),
 ]

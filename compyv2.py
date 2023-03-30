@@ -1,4 +1,4 @@
-import sys
+
 import ply.lex as lex
 import ply.yacc as yacc
 import tkinter as tk
@@ -40,6 +40,11 @@ def t_newline(t):
 def t_error(t):
 	print ("caracter ilegal '%s'" %t.value[0])
 	t.lexer.skip(1)
+        
+def t_COMENTARIO(t):
+    r'\#.*'
+    pass  # Se descarta el comentario
+     
 precedence = (
     ('left', 'Mas', 'Menos'),
     ('left', 'Por', 'Entre'),
@@ -48,8 +53,16 @@ precedence = (
 
 # Definición de gramática
 def p_programa(p):
-    '''programa : INICIO cuerpo FIN'''
+    '''programa : INICIO cuerpo FIN programa_end'''
     pass
+
+def p_programa_end(p):
+    '''
+    programa_end :
+    '''
+    if p[-3] != 'INICIO' or p[-1] != 'FIN':
+        print("Error de sintaxis: programa incompleto")
+
 def p_expresion_decimal(p):
     '''
     expresion : Numero Punto Numero

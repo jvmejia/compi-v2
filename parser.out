@@ -3,93 +3,91 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> programa
-Rule 1     programa -> INICIO cuerpo FIN
-Rule 2     expresion -> Numero Punto Numero
-Rule 3     cuerpo -> lista_declaraciones
-Rule 4     lista_declaraciones -> lista_declaraciones declaracion
-Rule 5     lista_declaraciones -> declaracion
-Rule 6     declaracion -> tipo lista_variables puntocoma
-Rule 7     tipo -> const
-Rule 8     tipo -> var
-Rule 9     lista_variables -> lista_variables Coma ID
-Rule 10    lista_variables -> ID
-Rule 11    sentencia -> asignacion
-Rule 12    sentencia -> estructura_control
-Rule 13    sentencia -> escritura
-Rule 14    asignacion -> ID Asigna expresion puntocoma
-Rule 15    estructura_control -> sentencia_if
-Rule 16    estructura_control -> sentencia_while
-Rule 17    sentencia_if -> Si condicion entonces cuerpo FIN
-Rule 18    sentencia_while -> mientras condicion hacer cuerpo FIN
-Rule 19    condicion -> expresion comparador expresion
-Rule 20    comparador -> Menor
-Rule 21    comparador -> Mayor
-Rule 22    comparador -> Menorigual
-Rule 23    comparador -> Mayorigual
-Rule 24    comparador -> Dif
-Rule 25    expresion -> expresion Mas expresion
-Rule 26    expresion -> expresion Menos expresion
-Rule 27    expresion -> expresion Por expresion
-Rule 28    expresion -> expresion Entre expresion
-Rule 29    expresion -> ID
-Rule 30    expresion -> Numero
-Rule 31    expresion -> izpar expresion derpar
-Rule 32    escritura -> print izpar expresion derpar puntocoma
+Rule 1     programa -> INICIO cuerpo FIN programa_end
+Rule 2     programa_end -> <empty>
+Rule 3     expresion -> Numero Punto Numero
+Rule 4     cuerpo -> lista_declaraciones
+Rule 5     lista_declaraciones -> lista_declaraciones declaracion
+Rule 6     lista_declaraciones -> declaracion
+Rule 7     declaracion -> tipo lista_variables puntocoma
+Rule 8     tipo -> const
+Rule 9     tipo -> var
+Rule 10    lista_variables -> lista_variables Coma ID
+Rule 11    lista_variables -> ID
+Rule 12    asignacion -> ID Asigna expresion puntocoma
+Rule 13    estructura_control -> sentencia_if
+Rule 14    estructura_control -> sentencia_while
+Rule 15    sentencia_if -> Si condicion entonces cuerpo FIN
+Rule 16    sentencia_while -> mientras condicion hacer cuerpo FIN
+Rule 17    condicion -> expresion comparador expresion
+Rule 18    comparador -> Menor
+Rule 19    comparador -> Mayor
+Rule 20    comparador -> Menorigual
+Rule 21    comparador -> Mayorigual
+Rule 22    comparador -> Dif
+Rule 23    expresion -> expresion Mas expresion
+Rule 24    expresion -> expresion Menos expresion
+Rule 25    expresion -> expresion Por expresion
+Rule 26    expresion -> expresion Entre expresion
+Rule 27    expresion -> ID
+Rule 28    expresion -> Numero
+Rule 29    expresion -> izpar expresion derpar
+Rule 30    escritura -> print izpar expresion derpar puntocoma
 
 Terminals, with rules where they appear
 
-Asigna               : 14
-Coma                 : 9
-Dif                  : 24
-Entre                : 28
-FIN                  : 1 17 18
-ID                   : 9 10 14 29
+Asigna               : 12
+Coma                 : 10
+Dif                  : 22
+Entre                : 26
+FIN                  : 1 15 16
+ID                   : 10 11 12 27
 INICIO               : 1
-Mas                  : 25
-Mayor                : 21
-Mayorigual           : 23
-Menor                : 20
-Menorigual           : 22
-Menos                : 26
-Numero               : 2 2 30
-Por                  : 27
-Punto                : 2
-Si                   : 17
-const                : 7
-derpar               : 31 32
-entonces             : 17
+Mas                  : 23
+Mayor                : 19
+Mayorigual           : 21
+Menor                : 18
+Menorigual           : 20
+Menos                : 24
+Numero               : 3 3 28
+Por                  : 25
+Punto                : 3
+Si                   : 15
+const                : 8
+derpar               : 29 30
+entonces             : 15
 error                : 
-hacer                : 18
-izpar                : 31 32
-mientras             : 18
-print                : 32
-puntocoma            : 6 14 32
-var                  : 8
+hacer                : 16
+izpar                : 29 30
+mientras             : 16
+print                : 30
+puntocoma            : 7 12 30
+var                  : 9
 
 Nonterminals, with rules where they appear
 
-asignacion           : 11
-comparador           : 19
-condicion            : 17 18
-cuerpo               : 1 17 18
-declaracion          : 4 5
-escritura            : 13
-estructura_control   : 12
-expresion            : 14 19 19 25 25 26 26 27 27 28 28 31 32
-lista_declaraciones  : 3 4
-lista_variables      : 6 9
+asignacion           : 
+comparador           : 17
+condicion            : 15 16
+cuerpo               : 1 15 16
+declaracion          : 5 6
+escritura            : 
+estructura_control   : 
+expresion            : 12 17 17 23 23 24 24 25 25 26 26 29 30
+lista_declaraciones  : 4 5
+lista_variables      : 7 10
 programa             : 0
-sentencia            : 
-sentencia_if         : 15
-sentencia_while      : 16
-tipo                 : 6
+programa_end         : 1
+sentencia_if         : 13
+sentencia_while      : 14
+tipo                 : 7
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . programa
-    (1) programa -> . INICIO cuerpo FIN
+    (1) programa -> . INICIO cuerpo FIN programa_end
 
     INICIO          shift and go to state 2
 
@@ -103,13 +101,13 @@ state 1
 
 state 2
 
-    (1) programa -> INICIO . cuerpo FIN
-    (3) cuerpo -> . lista_declaraciones
-    (4) lista_declaraciones -> . lista_declaraciones declaracion
-    (5) lista_declaraciones -> . declaracion
-    (6) declaracion -> . tipo lista_variables puntocoma
-    (7) tipo -> . const
-    (8) tipo -> . var
+    (1) programa -> INICIO . cuerpo FIN programa_end
+    (4) cuerpo -> . lista_declaraciones
+    (5) lista_declaraciones -> . lista_declaraciones declaracion
+    (6) lista_declaraciones -> . declaracion
+    (7) declaracion -> . tipo lista_variables puntocoma
+    (8) tipo -> . const
+    (9) tipo -> . var
 
     const           shift and go to state 7
     var             shift and go to state 8
@@ -121,20 +119,20 @@ state 2
 
 state 3
 
-    (1) programa -> INICIO cuerpo . FIN
+    (1) programa -> INICIO cuerpo . FIN programa_end
 
     FIN             shift and go to state 9
 
 
 state 4
 
-    (3) cuerpo -> lista_declaraciones .
-    (4) lista_declaraciones -> lista_declaraciones . declaracion
-    (6) declaracion -> . tipo lista_variables puntocoma
-    (7) tipo -> . const
-    (8) tipo -> . var
+    (4) cuerpo -> lista_declaraciones .
+    (5) lista_declaraciones -> lista_declaraciones . declaracion
+    (7) declaracion -> . tipo lista_variables puntocoma
+    (8) tipo -> . const
+    (9) tipo -> . var
 
-    FIN             reduce using rule 3 (cuerpo -> lista_declaraciones .)
+    FIN             reduce using rule 4 (cuerpo -> lista_declaraciones .)
     const           shift and go to state 7
     var             shift and go to state 8
 
@@ -143,18 +141,18 @@ state 4
 
 state 5
 
-    (5) lista_declaraciones -> declaracion .
+    (6) lista_declaraciones -> declaracion .
 
-    const           reduce using rule 5 (lista_declaraciones -> declaracion .)
-    var             reduce using rule 5 (lista_declaraciones -> declaracion .)
-    FIN             reduce using rule 5 (lista_declaraciones -> declaracion .)
+    const           reduce using rule 6 (lista_declaraciones -> declaracion .)
+    var             reduce using rule 6 (lista_declaraciones -> declaracion .)
+    FIN             reduce using rule 6 (lista_declaraciones -> declaracion .)
 
 
 state 6
 
-    (6) declaracion -> tipo . lista_variables puntocoma
-    (9) lista_variables -> . lista_variables Coma ID
-    (10) lista_variables -> . ID
+    (7) declaracion -> tipo . lista_variables puntocoma
+    (10) lista_variables -> . lista_variables Coma ID
+    (11) lista_variables -> . ID
 
     ID              shift and go to state 12
 
@@ -162,71 +160,80 @@ state 6
 
 state 7
 
-    (7) tipo -> const .
+    (8) tipo -> const .
 
-    ID              reduce using rule 7 (tipo -> const .)
+    ID              reduce using rule 8 (tipo -> const .)
 
 
 state 8
 
-    (8) tipo -> var .
+    (9) tipo -> var .
 
-    ID              reduce using rule 8 (tipo -> var .)
+    ID              reduce using rule 9 (tipo -> var .)
 
 
 state 9
 
-    (1) programa -> INICIO cuerpo FIN .
+    (1) programa -> INICIO cuerpo FIN . programa_end
+    (2) programa_end -> .
 
-    $end            reduce using rule 1 (programa -> INICIO cuerpo FIN .)
+    $end            reduce using rule 2 (programa_end -> .)
 
+    programa_end                   shift and go to state 13
 
 state 10
 
-    (4) lista_declaraciones -> lista_declaraciones declaracion .
+    (5) lista_declaraciones -> lista_declaraciones declaracion .
 
-    const           reduce using rule 4 (lista_declaraciones -> lista_declaraciones declaracion .)
-    var             reduce using rule 4 (lista_declaraciones -> lista_declaraciones declaracion .)
-    FIN             reduce using rule 4 (lista_declaraciones -> lista_declaraciones declaracion .)
+    const           reduce using rule 5 (lista_declaraciones -> lista_declaraciones declaracion .)
+    var             reduce using rule 5 (lista_declaraciones -> lista_declaraciones declaracion .)
+    FIN             reduce using rule 5 (lista_declaraciones -> lista_declaraciones declaracion .)
 
 
 state 11
 
-    (6) declaracion -> tipo lista_variables . puntocoma
-    (9) lista_variables -> lista_variables . Coma ID
+    (7) declaracion -> tipo lista_variables . puntocoma
+    (10) lista_variables -> lista_variables . Coma ID
 
-    puntocoma       shift and go to state 13
-    Coma            shift and go to state 14
+    puntocoma       shift and go to state 14
+    Coma            shift and go to state 15
 
 
 state 12
 
-    (10) lista_variables -> ID .
+    (11) lista_variables -> ID .
 
-    puntocoma       reduce using rule 10 (lista_variables -> ID .)
-    Coma            reduce using rule 10 (lista_variables -> ID .)
+    puntocoma       reduce using rule 11 (lista_variables -> ID .)
+    Coma            reduce using rule 11 (lista_variables -> ID .)
 
 
 state 13
 
-    (6) declaracion -> tipo lista_variables puntocoma .
+    (1) programa -> INICIO cuerpo FIN programa_end .
 
-    const           reduce using rule 6 (declaracion -> tipo lista_variables puntocoma .)
-    var             reduce using rule 6 (declaracion -> tipo lista_variables puntocoma .)
-    FIN             reduce using rule 6 (declaracion -> tipo lista_variables puntocoma .)
+    $end            reduce using rule 1 (programa -> INICIO cuerpo FIN programa_end .)
 
 
 state 14
 
-    (9) lista_variables -> lista_variables Coma . ID
+    (7) declaracion -> tipo lista_variables puntocoma .
 
-    ID              shift and go to state 15
+    const           reduce using rule 7 (declaracion -> tipo lista_variables puntocoma .)
+    var             reduce using rule 7 (declaracion -> tipo lista_variables puntocoma .)
+    FIN             reduce using rule 7 (declaracion -> tipo lista_variables puntocoma .)
 
 
 state 15
 
-    (9) lista_variables -> lista_variables Coma ID .
+    (10) lista_variables -> lista_variables Coma . ID
 
-    puntocoma       reduce using rule 9 (lista_variables -> lista_variables Coma ID .)
-    Coma            reduce using rule 9 (lista_variables -> lista_variables Coma ID .)
+    ID              shift and go to state 16
+
+
+state 16
+
+    (10) lista_variables -> lista_variables Coma ID .
+
+    puntocoma       reduce using rule 10 (lista_variables -> lista_variables Coma ID .)
+    Coma            reduce using rule 10 (lista_variables -> lista_variables Coma ID .)
 

@@ -133,32 +133,17 @@ def p_error(p):
 #Crear ventana principal
 
 root = tk.Tk()
-root.title("Analizador")
+root.title("Analizador Sintáctico")
 #Función para abrir archivo de entrada
 
 def abrir_archivo():
     file_path = filedialog.askopenfilename()
     with open(file_path) as file:
-        # Leer archivo y ejecutar análisis sintáctico
-        input_str = file.read()
-
-        # Crear una nueva ventana para mostrar el contenido del archivo
-        ventana = tk.Toplevel(root)
-
-        # Crear un widget de entrada de texto y cargar el contenido del archivo
-        texto = tk.Text(ventana)
-        texto.insert('1.0', input_str)
-        texto.pack()
-
-        # Crear un botón para guardar los cambios
-        guardar_boton = tk.Button(ventana, text='Guardar', command=lambda: guardar_archivo(file_path, texto.get('1.0', 'end-1c')))
-        guardar_boton.pack()
-
-def guardar_archivo(file_path, contenido):
-    with open(file_path, 'w') as file:
-        file.write(contenido)
-
+# Leer archivo y ejecutar análisis sintáctico
+     input_str = file.read()
+    parser.parse(input_str)
 #Crear botón para abrir archivo
+
 abrir_btn = tk.Button(root, text="Abrir archivo", command=abrir_archivo)
 abrir_btn.pack()
 #Etiqueta para mostrar resultados
@@ -181,7 +166,7 @@ def analizar():
         parser.parse(codigo_fuente)
         mostrar_resultados("Análisis completado")  # Nueva línea
     except Exception as e:
-        mostrar_resultados(f"Error interno: {e}")
+        mostrar_resultados(f"Error de sintaxis: {e}")
 #Crear botón para ejecutar análisis sintáctico
 
 analizar_btn = tk.Button(root, text="Analizar", command=analizar)

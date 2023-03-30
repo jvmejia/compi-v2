@@ -1,250 +1,232 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    ID
-
 Grammar
 
-Rule 0     S' -> expression
-Rule 1     expression -> expression PLUS term
-Rule 2     expression -> expression MINUS term
-Rule 3     expression -> term
-Rule 4     term -> term TIMES factor
-Rule 5     term -> term DIVIDE factor
-Rule 6     term -> factor
-Rule 7     factor -> NUMBER
-Rule 8     factor -> LPAREN expression RPAREN
+Rule 0     S' -> programa
+Rule 1     programa -> INICIO cuerpo FIN
+Rule 2     expresion -> Numero Punto Numero
+Rule 3     cuerpo -> lista_declaraciones
+Rule 4     lista_declaraciones -> lista_declaraciones declaracion
+Rule 5     lista_declaraciones -> declaracion
+Rule 6     declaracion -> tipo lista_variables puntocoma
+Rule 7     tipo -> const
+Rule 8     tipo -> var
+Rule 9     lista_variables -> lista_variables Coma ID
+Rule 10    lista_variables -> ID
+Rule 11    sentencia -> asignacion
+Rule 12    sentencia -> estructura_control
+Rule 13    sentencia -> escritura
+Rule 14    asignacion -> ID Asigna expresion puntocoma
+Rule 15    estructura_control -> sentencia_if
+Rule 16    estructura_control -> sentencia_while
+Rule 17    sentencia_if -> Si condicion entonces cuerpo FIN
+Rule 18    sentencia_while -> mientras condicion hacer cuerpo FIN
+Rule 19    condicion -> expresion comparador expresion
+Rule 20    comparador -> Menor
+Rule 21    comparador -> Mayor
+Rule 22    comparador -> Menorigual
+Rule 23    comparador -> Mayorigual
+Rule 24    comparador -> Dif
+Rule 25    expresion -> expresion Mas expresion
+Rule 26    expresion -> expresion Menos expresion
+Rule 27    expresion -> expresion Por expresion
+Rule 28    expresion -> expresion Entre expresion
+Rule 29    expresion -> ID
+Rule 30    expresion -> Numero
+Rule 31    expresion -> izpar expresion derpar
+Rule 32    escritura -> print izpar expresion derpar puntocoma
 
 Terminals, with rules where they appear
 
-DIVIDE               : 5
-ID                   : 
-LPAREN               : 8
-MINUS                : 2
-NUMBER               : 7
-PLUS                 : 1
-RPAREN               : 8
-TIMES                : 4
+Asigna               : 14
+Coma                 : 9
+Dif                  : 24
+Entre                : 28
+FIN                  : 1 17 18
+ID                   : 9 10 14 29
+INICIO               : 1
+Mas                  : 25
+Mayor                : 21
+Mayorigual           : 23
+Menor                : 20
+Menorigual           : 22
+Menos                : 26
+Numero               : 2 2 30
+Por                  : 27
+Punto                : 2
+Si                   : 17
+const                : 7
+derpar               : 31 32
+entonces             : 17
 error                : 
+hacer                : 18
+izpar                : 31 32
+mientras             : 18
+print                : 32
+puntocoma            : 6 14 32
+var                  : 8
 
 Nonterminals, with rules where they appear
 
-expression           : 1 2 8 0
-factor               : 4 5 6
-term                 : 1 2 3 4 5
+asignacion           : 11
+comparador           : 19
+condicion            : 17 18
+cuerpo               : 1 17 18
+declaracion          : 4 5
+escritura            : 13
+estructura_control   : 12
+expresion            : 14 19 19 25 25 26 26 27 27 28 28 31 32
+lista_declaraciones  : 3 4
+lista_variables      : 6 9
+programa             : 0
+sentencia            : 
+sentencia_if         : 15
+sentencia_while      : 16
+tipo                 : 6
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . expression
-    (1) expression -> . expression PLUS term
-    (2) expression -> . expression MINUS term
-    (3) expression -> . term
-    (4) term -> . term TIMES factor
-    (5) term -> . term DIVIDE factor
-    (6) term -> . factor
-    (7) factor -> . NUMBER
-    (8) factor -> . LPAREN expression RPAREN
+    (0) S' -> . programa
+    (1) programa -> . INICIO cuerpo FIN
 
-    NUMBER          shift and go to state 4
-    LPAREN          shift and go to state 5
+    INICIO          shift and go to state 2
 
-    expression                     shift and go to state 1
-    term                           shift and go to state 2
-    factor                         shift and go to state 3
+    programa                       shift and go to state 1
 
 state 1
 
-    (0) S' -> expression .
-    (1) expression -> expression . PLUS term
-    (2) expression -> expression . MINUS term
+    (0) S' -> programa .
 
-    PLUS            shift and go to state 6
-    MINUS           shift and go to state 7
 
 
 state 2
 
-    (3) expression -> term .
-    (4) term -> term . TIMES factor
-    (5) term -> term . DIVIDE factor
+    (1) programa -> INICIO . cuerpo FIN
+    (3) cuerpo -> . lista_declaraciones
+    (4) lista_declaraciones -> . lista_declaraciones declaracion
+    (5) lista_declaraciones -> . declaracion
+    (6) declaracion -> . tipo lista_variables puntocoma
+    (7) tipo -> . const
+    (8) tipo -> . var
 
-    PLUS            reduce using rule 3 (expression -> term .)
-    MINUS           reduce using rule 3 (expression -> term .)
-    $end            reduce using rule 3 (expression -> term .)
-    RPAREN          reduce using rule 3 (expression -> term .)
-    TIMES           shift and go to state 8
-    DIVIDE          shift and go to state 9
+    const           shift and go to state 7
+    var             shift and go to state 8
 
+    cuerpo                         shift and go to state 3
+    lista_declaraciones            shift and go to state 4
+    declaracion                    shift and go to state 5
+    tipo                           shift and go to state 6
 
 state 3
 
-    (6) term -> factor .
+    (1) programa -> INICIO cuerpo . FIN
 
-    TIMES           reduce using rule 6 (term -> factor .)
-    DIVIDE          reduce using rule 6 (term -> factor .)
-    PLUS            reduce using rule 6 (term -> factor .)
-    MINUS           reduce using rule 6 (term -> factor .)
-    $end            reduce using rule 6 (term -> factor .)
-    RPAREN          reduce using rule 6 (term -> factor .)
+    FIN             shift and go to state 9
 
 
 state 4
 
-    (7) factor -> NUMBER .
+    (3) cuerpo -> lista_declaraciones .
+    (4) lista_declaraciones -> lista_declaraciones . declaracion
+    (6) declaracion -> . tipo lista_variables puntocoma
+    (7) tipo -> . const
+    (8) tipo -> . var
 
-    TIMES           reduce using rule 7 (factor -> NUMBER .)
-    DIVIDE          reduce using rule 7 (factor -> NUMBER .)
-    PLUS            reduce using rule 7 (factor -> NUMBER .)
-    MINUS           reduce using rule 7 (factor -> NUMBER .)
-    $end            reduce using rule 7 (factor -> NUMBER .)
-    RPAREN          reduce using rule 7 (factor -> NUMBER .)
+    FIN             reduce using rule 3 (cuerpo -> lista_declaraciones .)
+    const           shift and go to state 7
+    var             shift and go to state 8
 
+    declaracion                    shift and go to state 10
+    tipo                           shift and go to state 6
 
 state 5
 
-    (8) factor -> LPAREN . expression RPAREN
-    (1) expression -> . expression PLUS term
-    (2) expression -> . expression MINUS term
-    (3) expression -> . term
-    (4) term -> . term TIMES factor
-    (5) term -> . term DIVIDE factor
-    (6) term -> . factor
-    (7) factor -> . NUMBER
-    (8) factor -> . LPAREN expression RPAREN
+    (5) lista_declaraciones -> declaracion .
 
-    NUMBER          shift and go to state 4
-    LPAREN          shift and go to state 5
+    const           reduce using rule 5 (lista_declaraciones -> declaracion .)
+    var             reduce using rule 5 (lista_declaraciones -> declaracion .)
+    FIN             reduce using rule 5 (lista_declaraciones -> declaracion .)
 
-    expression                     shift and go to state 10
-    term                           shift and go to state 2
-    factor                         shift and go to state 3
 
 state 6
 
-    (1) expression -> expression PLUS . term
-    (4) term -> . term TIMES factor
-    (5) term -> . term DIVIDE factor
-    (6) term -> . factor
-    (7) factor -> . NUMBER
-    (8) factor -> . LPAREN expression RPAREN
+    (6) declaracion -> tipo . lista_variables puntocoma
+    (9) lista_variables -> . lista_variables Coma ID
+    (10) lista_variables -> . ID
 
-    NUMBER          shift and go to state 4
-    LPAREN          shift and go to state 5
+    ID              shift and go to state 12
 
-    term                           shift and go to state 11
-    factor                         shift and go to state 3
+    lista_variables                shift and go to state 11
 
 state 7
 
-    (2) expression -> expression MINUS . term
-    (4) term -> . term TIMES factor
-    (5) term -> . term DIVIDE factor
-    (6) term -> . factor
-    (7) factor -> . NUMBER
-    (8) factor -> . LPAREN expression RPAREN
+    (7) tipo -> const .
 
-    NUMBER          shift and go to state 4
-    LPAREN          shift and go to state 5
+    ID              reduce using rule 7 (tipo -> const .)
 
-    term                           shift and go to state 12
-    factor                         shift and go to state 3
 
 state 8
 
-    (4) term -> term TIMES . factor
-    (7) factor -> . NUMBER
-    (8) factor -> . LPAREN expression RPAREN
+    (8) tipo -> var .
 
-    NUMBER          shift and go to state 4
-    LPAREN          shift and go to state 5
+    ID              reduce using rule 8 (tipo -> var .)
 
-    factor                         shift and go to state 13
 
 state 9
 
-    (5) term -> term DIVIDE . factor
-    (7) factor -> . NUMBER
-    (8) factor -> . LPAREN expression RPAREN
+    (1) programa -> INICIO cuerpo FIN .
 
-    NUMBER          shift and go to state 4
-    LPAREN          shift and go to state 5
+    $end            reduce using rule 1 (programa -> INICIO cuerpo FIN .)
 
-    factor                         shift and go to state 14
 
 state 10
 
-    (8) factor -> LPAREN expression . RPAREN
-    (1) expression -> expression . PLUS term
-    (2) expression -> expression . MINUS term
+    (4) lista_declaraciones -> lista_declaraciones declaracion .
 
-    RPAREN          shift and go to state 15
-    PLUS            shift and go to state 6
-    MINUS           shift and go to state 7
+    const           reduce using rule 4 (lista_declaraciones -> lista_declaraciones declaracion .)
+    var             reduce using rule 4 (lista_declaraciones -> lista_declaraciones declaracion .)
+    FIN             reduce using rule 4 (lista_declaraciones -> lista_declaraciones declaracion .)
 
 
 state 11
 
-    (1) expression -> expression PLUS term .
-    (4) term -> term . TIMES factor
-    (5) term -> term . DIVIDE factor
+    (6) declaracion -> tipo lista_variables . puntocoma
+    (9) lista_variables -> lista_variables . Coma ID
 
-    PLUS            reduce using rule 1 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 1 (expression -> expression PLUS term .)
-    $end            reduce using rule 1 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 1 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 8
-    DIVIDE          shift and go to state 9
+    puntocoma       shift and go to state 13
+    Coma            shift and go to state 14
 
 
 state 12
 
-    (2) expression -> expression MINUS term .
-    (4) term -> term . TIMES factor
-    (5) term -> term . DIVIDE factor
+    (10) lista_variables -> ID .
 
-    PLUS            reduce using rule 2 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 2 (expression -> expression MINUS term .)
-    $end            reduce using rule 2 (expression -> expression MINUS term .)
-    RPAREN          reduce using rule 2 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 8
-    DIVIDE          shift and go to state 9
+    puntocoma       reduce using rule 10 (lista_variables -> ID .)
+    Coma            reduce using rule 10 (lista_variables -> ID .)
 
 
 state 13
 
-    (4) term -> term TIMES factor .
+    (6) declaracion -> tipo lista_variables puntocoma .
 
-    TIMES           reduce using rule 4 (term -> term TIMES factor .)
-    DIVIDE          reduce using rule 4 (term -> term TIMES factor .)
-    PLUS            reduce using rule 4 (term -> term TIMES factor .)
-    MINUS           reduce using rule 4 (term -> term TIMES factor .)
-    $end            reduce using rule 4 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 4 (term -> term TIMES factor .)
+    const           reduce using rule 6 (declaracion -> tipo lista_variables puntocoma .)
+    var             reduce using rule 6 (declaracion -> tipo lista_variables puntocoma .)
+    FIN             reduce using rule 6 (declaracion -> tipo lista_variables puntocoma .)
 
 
 state 14
 
-    (5) term -> term DIVIDE factor .
+    (9) lista_variables -> lista_variables Coma . ID
 
-    TIMES           reduce using rule 5 (term -> term DIVIDE factor .)
-    DIVIDE          reduce using rule 5 (term -> term DIVIDE factor .)
-    PLUS            reduce using rule 5 (term -> term DIVIDE factor .)
-    MINUS           reduce using rule 5 (term -> term DIVIDE factor .)
-    $end            reduce using rule 5 (term -> term DIVIDE factor .)
-    RPAREN          reduce using rule 5 (term -> term DIVIDE factor .)
+    ID              shift and go to state 15
 
 
 state 15
 
-    (8) factor -> LPAREN expression RPAREN .
+    (9) lista_variables -> lista_variables Coma ID .
 
-    TIMES           reduce using rule 8 (factor -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 8 (factor -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 8 (factor -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 8 (factor -> LPAREN expression RPAREN .)
-    $end            reduce using rule 8 (factor -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 8 (factor -> LPAREN expression RPAREN .)
+    puntocoma       reduce using rule 9 (lista_variables -> lista_variables Coma ID .)
+    Coma            reduce using rule 9 (lista_variables -> lista_variables Coma ID .)
 

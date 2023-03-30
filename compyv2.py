@@ -39,6 +39,10 @@ def t_newline(t):
 def t_error(t):
 	print ("caracter ilegal '%s'" %t.value[0])
 	t.lexer.skip(1)
+precedence = (
+    ('left', 'Mas', 'Menos'),
+    ('left', 'Por', 'Entre'),
+)
         
 
 # Definición de gramática

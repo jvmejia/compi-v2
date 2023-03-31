@@ -1,9 +1,8 @@
-
 import ply.lex as lex
 import ply.yacc as yacc
 import tkinter as tk
-from tkinter import filedialog
-# Definimos los tokens
+
+# Definir tokens
 tokens = (
     'NOMBRE',
     'NUMERO',
@@ -19,21 +18,23 @@ tokens = (
     'MIENTRAS',
     'DOS_PUNTOS',
     'INDENTACION',
-    'DEDENTACION'
+    'DEDENTACION',
 )
 
-# Tokens
+# Expresiones regulares para tokens
 t_SUMA = r'\+'
 t_RESTA = r'-'
 t_MULTIPLICACION = r'\*'
 t_DIVISION = r'/'
+t_PARENTESIS_IZQ = r'\('
+t_PARENTESIS_DER = r'\)'
 t_ASIGNACION = r'='
 t_DOS_PUNTOS = r':'
 
 # Ignorar espacios y tabulaciones
 t_ignore = ' \t'
 
-# Nueva línea
+# Manejar saltos de línea
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
@@ -103,61 +104,40 @@ def p_statement_mientras(p):
     'statement : MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION'
     p[0] = ('MIENTRAS', p[2], p[5])
 
-def p_statement_mientras_error(p):
-    'statement : MIENTRAS DOS_PUNTOS error DEDENTACION'
-    print("Error de sintaxis en la estructura de control mientras")
-
-def p_statement_error(p):
-    'statement : error'
-    print("Error de sintaxis en la expresión")
 def p_error(p):
-    print("Error de sintaxis en la expresión")
+    print("Error de sintaxis en '%s'" % p.value)
 
 parser = yacc.yacc()
+
+class CompilerApp:
+    def init(self, master):
+        self.master = master
+        master.title("Compilador")
+
+
+
+        self.label = tk.Label(master, text="Ingresa el código:")
+        self.label.pack()
+
+        self.code_text = tk.Text(master, width=40, height=10)
+        self.code_text.pack()
+
+        self.button = tk.Button(master, text="Compilar", command=self.compile_code)
+        self.button.pack()
+
+        self.result_label = tk.Label(master, text="")
+        self.result_label.pack()
+
+def compile_code(self):
+    code = self.code_text.get("1.0", "end")
+    result = self.run_compiler(code)
+    self.result_label.config(text=result)
+
+def run_compiler(self, code):
+    lexer.input(code)
+    parsed = parser.parse(code)
+    return str(parsed)
 
 root = tk.Tk()
-root.title("Analizador Sintáctico")
-#Función para abrir archivo de entrada
-
-def abrir_archivo():
-    file_path = filedialog.askopenfilename()
-    with open(file_path) as file:
-# Leer archivo y ejecutar análisis sintáctico
-     input_str = file.read()
-    parser.parse(input_str)
-#Crear botón para abrir archivo
-
-abrir_btn = tk.Button(root, text="Abrir archivo", command=abrir_archivo)
-abrir_btn.pack()
-#Etiqueta para mostrar resultados
-
-result_label = tk.Label(root, text="")
-result_label.pack()
-#Función para mostrar resultados
-
-def mostrar_resultados(result):
-    result_label.configure(text=result)
-
-parser = yacc.yacc()
-lexer = lex.lex()
-#Función para ejecutar análisis sintáctico
-
-def analizar():
-    codigo_fuente = editor.get("1.0", tk.END)
-    # Ejecutar análisis sintáctico
-    try:
-        parser.parse(codigo_fuente)
-        mostrar_resultados("Análisis completado")  # Nueva línea
-    except Exception as e:
-        mostrar_resultados(f"Error de sintaxis: {e}")
-#Crear botón para ejecutar análisis sintáctico
-
-analizar_btn = tk.Button(root, text="Analizar", command=analizar)
-analizar_btn.pack()
-#Crear cuadro de texto para ingresar código
-
-editor = tk.Text(root, height=20, width=50)
-editor.pack()
-#Iniciar loop de la interfaz gráfica
-
+app = CompilerApp(root)
 root.mainloop()

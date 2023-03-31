@@ -1,239 +1,601 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
+Unused terminals:
+
+    PARENTESIS_DER
+    PARENTESIS_IZQ
+
 Grammar
 
-Rule 0     S' -> programa
-Rule 1     programa -> INICIO cuerpo FIN programa_end
-Rule 2     programa_end -> <empty>
-Rule 3     expresion -> Numero Punto Numero
-Rule 4     cuerpo -> lista_declaraciones
-Rule 5     lista_declaraciones -> lista_declaraciones declaracion
-Rule 6     lista_declaraciones -> declaracion
-Rule 7     declaracion -> tipo lista_variables puntocoma
-Rule 8     tipo -> const
-Rule 9     tipo -> var
-Rule 10    lista_variables -> lista_variables Coma ID
-Rule 11    lista_variables -> ID
-Rule 12    asignacion -> ID Asigna expresion puntocoma
-Rule 13    estructura_control -> sentencia_if
-Rule 14    estructura_control -> sentencia_while
-Rule 15    sentencia_if -> Si condicion entonces cuerpo FIN
-Rule 16    sentencia_while -> mientras condicion hacer cuerpo FIN
-Rule 17    condicion -> expresion comparador expresion
-Rule 18    comparador -> Menor
-Rule 19    comparador -> Mayor
-Rule 20    comparador -> Menorigual
-Rule 21    comparador -> Mayorigual
-Rule 22    comparador -> Dif
-Rule 23    expresion -> expresion Mas expresion
-Rule 24    expresion -> expresion Menos expresion
-Rule 25    expresion -> expresion Por expresion
-Rule 26    expresion -> expresion Entre expresion
-Rule 27    expresion -> ID
-Rule 28    expresion -> Numero
-Rule 29    expresion -> izpar expresion derpar
-Rule 30    escritura -> print izpar expresion derpar puntocoma
+Rule 0     S' -> statement
+Rule 1     statement -> NOMBRE ASIGNACION expression
+Rule 2     statement -> expression
+Rule 3     expression -> expression SUMA expression
+Rule 4     expression -> expression RESTA expression
+Rule 5     expression -> expression MULTIPLICACION expression
+Rule 6     expression -> expression DIVISION expression
+Rule 7     expression -> NUMERO
+Rule 8     expression -> NOMBRE
+Rule 9     statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION
+Rule 10    statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+Rule 11    statement -> MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION
+Rule 12    statement -> MIENTRAS DOS_PUNTOS error DEDENTACION
+Rule 13    statement -> error
 
 Terminals, with rules where they appear
 
-Asigna               : 12
-Coma                 : 10
-Dif                  : 22
-Entre                : 26
-FIN                  : 1 15 16
-ID                   : 10 11 12 27
-INICIO               : 1
-Mas                  : 23
-Mayor                : 19
-Mayorigual           : 21
-Menor                : 18
-Menorigual           : 20
-Menos                : 24
-Numero               : 3 3 28
-Por                  : 25
-Punto                : 3
-Si                   : 15
-const                : 8
-derpar               : 29 30
-entonces             : 15
-error                : 
-hacer                : 16
-izpar                : 29 30
-mientras             : 16
-print                : 30
-puntocoma            : 7 12 30
-var                  : 9
+ASIGNACION           : 1
+DEDENTACION          : 9 10 10 11 12
+DIVISION             : 6
+DOS_PUNTOS           : 9 10 10 11 12
+INDENTACION          : 9 10 10 11
+MIENTRAS             : 11 12
+MULTIPLICACION       : 5
+NOMBRE               : 1 8
+NUMERO               : 7
+PARENTESIS_DER       : 
+PARENTESIS_IZQ       : 
+RESTA                : 4
+SI                   : 9 10
+SINO                 : 10
+SUMA                 : 3
+error                : 12 13
 
 Nonterminals, with rules where they appear
 
-asignacion           : 
-comparador           : 17
-condicion            : 15 16
-cuerpo               : 1 15 16
-declaracion          : 5 6
-escritura            : 
-estructura_control   : 
-expresion            : 12 17 17 23 23 24 24 25 25 26 26 29 30
-lista_declaraciones  : 4 5
-lista_variables      : 7 10
-programa             : 0
-programa_end         : 1
-sentencia_if         : 13
-sentencia_while      : 14
-tipo                 : 7
+expression           : 1 2 3 3 4 4 5 5 6 6 9 10 11
+statement            : 9 10 10 11 0
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . programa
-    (1) programa -> . INICIO cuerpo FIN programa_end
+    (0) S' -> . statement
+    (1) statement -> . NOMBRE ASIGNACION expression
+    (2) statement -> . expression
+    (9) statement -> . SI expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (10) statement -> . SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+    (11) statement -> . MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (12) statement -> . MIENTRAS DOS_PUNTOS error DEDENTACION
+    (13) statement -> . error
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
 
-    INICIO          shift and go to state 2
+    NOMBRE          shift and go to state 2
+    SI              shift and go to state 4
+    MIENTRAS        shift and go to state 5
+    error           shift and go to state 6
+    NUMERO          shift and go to state 7
 
-    programa                       shift and go to state 1
+    statement                      shift and go to state 1
+    expression                     shift and go to state 3
 
 state 1
 
-    (0) S' -> programa .
+    (0) S' -> statement .
 
 
 
 state 2
 
-    (1) programa -> INICIO . cuerpo FIN programa_end
-    (4) cuerpo -> . lista_declaraciones
-    (5) lista_declaraciones -> . lista_declaraciones declaracion
-    (6) lista_declaraciones -> . declaracion
-    (7) declaracion -> . tipo lista_variables puntocoma
-    (8) tipo -> . const
-    (9) tipo -> . var
+    (1) statement -> NOMBRE . ASIGNACION expression
+    (8) expression -> NOMBRE .
 
-    const           shift and go to state 7
-    var             shift and go to state 8
+    ASIGNACION      shift and go to state 8
+    SUMA            reduce using rule 8 (expression -> NOMBRE .)
+    RESTA           reduce using rule 8 (expression -> NOMBRE .)
+    MULTIPLICACION  reduce using rule 8 (expression -> NOMBRE .)
+    DIVISION        reduce using rule 8 (expression -> NOMBRE .)
+    $end            reduce using rule 8 (expression -> NOMBRE .)
+    DEDENTACION     reduce using rule 8 (expression -> NOMBRE .)
 
-    cuerpo                         shift and go to state 3
-    lista_declaraciones            shift and go to state 4
-    declaracion                    shift and go to state 5
-    tipo                           shift and go to state 6
 
 state 3
 
-    (1) programa -> INICIO cuerpo . FIN programa_end
+    (2) statement -> expression .
+    (3) expression -> expression . SUMA expression
+    (4) expression -> expression . RESTA expression
+    (5) expression -> expression . MULTIPLICACION expression
+    (6) expression -> expression . DIVISION expression
 
-    FIN             shift and go to state 9
+    $end            reduce using rule 2 (statement -> expression .)
+    DEDENTACION     reduce using rule 2 (statement -> expression .)
+    SUMA            shift and go to state 9
+    RESTA           shift and go to state 10
+    MULTIPLICACION  shift and go to state 11
+    DIVISION        shift and go to state 12
 
 
 state 4
 
-    (4) cuerpo -> lista_declaraciones .
-    (5) lista_declaraciones -> lista_declaraciones . declaracion
-    (7) declaracion -> . tipo lista_variables puntocoma
-    (8) tipo -> . const
-    (9) tipo -> . var
+    (9) statement -> SI . expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (10) statement -> SI . expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
 
-    FIN             reduce using rule 4 (cuerpo -> lista_declaraciones .)
-    const           shift and go to state 7
-    var             shift and go to state 8
+    NUMERO          shift and go to state 7
+    NOMBRE          shift and go to state 14
 
-    declaracion                    shift and go to state 10
-    tipo                           shift and go to state 6
+    expression                     shift and go to state 13
 
 state 5
 
-    (6) lista_declaraciones -> declaracion .
+    (11) statement -> MIENTRAS . expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (12) statement -> MIENTRAS . DOS_PUNTOS error DEDENTACION
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
 
-    const           reduce using rule 6 (lista_declaraciones -> declaracion .)
-    var             reduce using rule 6 (lista_declaraciones -> declaracion .)
-    FIN             reduce using rule 6 (lista_declaraciones -> declaracion .)
+    DOS_PUNTOS      shift and go to state 16
+    NUMERO          shift and go to state 7
+    NOMBRE          shift and go to state 14
 
+    expression                     shift and go to state 15
 
 state 6
 
-    (7) declaracion -> tipo . lista_variables puntocoma
-    (10) lista_variables -> . lista_variables Coma ID
-    (11) lista_variables -> . ID
+    (13) statement -> error .
 
-    ID              shift and go to state 12
+    $end            reduce using rule 13 (statement -> error .)
+    DEDENTACION     reduce using rule 13 (statement -> error .)
 
-    lista_variables                shift and go to state 11
 
 state 7
 
-    (8) tipo -> const .
+    (7) expression -> NUMERO .
 
-    ID              reduce using rule 8 (tipo -> const .)
+    SUMA            reduce using rule 7 (expression -> NUMERO .)
+    RESTA           reduce using rule 7 (expression -> NUMERO .)
+    MULTIPLICACION  reduce using rule 7 (expression -> NUMERO .)
+    DIVISION        reduce using rule 7 (expression -> NUMERO .)
+    $end            reduce using rule 7 (expression -> NUMERO .)
+    DOS_PUNTOS      reduce using rule 7 (expression -> NUMERO .)
+    DEDENTACION     reduce using rule 7 (expression -> NUMERO .)
 
 
 state 8
 
-    (9) tipo -> var .
+    (1) statement -> NOMBRE ASIGNACION . expression
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
 
-    ID              reduce using rule 9 (tipo -> var .)
+    NUMERO          shift and go to state 7
+    NOMBRE          shift and go to state 14
 
+    expression                     shift and go to state 17
 
 state 9
 
-    (1) programa -> INICIO cuerpo FIN . programa_end
-    (2) programa_end -> .
+    (3) expression -> expression SUMA . expression
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
 
-    $end            reduce using rule 2 (programa_end -> .)
+    NUMERO          shift and go to state 7
+    NOMBRE          shift and go to state 14
 
-    programa_end                   shift and go to state 13
+    expression                     shift and go to state 18
 
 state 10
 
-    (5) lista_declaraciones -> lista_declaraciones declaracion .
+    (4) expression -> expression RESTA . expression
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
 
-    const           reduce using rule 5 (lista_declaraciones -> lista_declaraciones declaracion .)
-    var             reduce using rule 5 (lista_declaraciones -> lista_declaraciones declaracion .)
-    FIN             reduce using rule 5 (lista_declaraciones -> lista_declaraciones declaracion .)
+    NUMERO          shift and go to state 7
+    NOMBRE          shift and go to state 14
 
+    expression                     shift and go to state 19
 
 state 11
 
-    (7) declaracion -> tipo lista_variables . puntocoma
-    (10) lista_variables -> lista_variables . Coma ID
+    (5) expression -> expression MULTIPLICACION . expression
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
 
-    puntocoma       shift and go to state 14
-    Coma            shift and go to state 15
+    NUMERO          shift and go to state 7
+    NOMBRE          shift and go to state 14
 
+    expression                     shift and go to state 20
 
 state 12
 
-    (11) lista_variables -> ID .
+    (6) expression -> expression DIVISION . expression
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
 
-    puntocoma       reduce using rule 11 (lista_variables -> ID .)
-    Coma            reduce using rule 11 (lista_variables -> ID .)
+    NUMERO          shift and go to state 7
+    NOMBRE          shift and go to state 14
 
+    expression                     shift and go to state 21
 
 state 13
 
-    (1) programa -> INICIO cuerpo FIN programa_end .
+    (9) statement -> SI expression . DOS_PUNTOS INDENTACION statement DEDENTACION
+    (10) statement -> SI expression . DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+    (3) expression -> expression . SUMA expression
+    (4) expression -> expression . RESTA expression
+    (5) expression -> expression . MULTIPLICACION expression
+    (6) expression -> expression . DIVISION expression
 
-    $end            reduce using rule 1 (programa -> INICIO cuerpo FIN programa_end .)
+    DOS_PUNTOS      shift and go to state 22
+    SUMA            shift and go to state 9
+    RESTA           shift and go to state 10
+    MULTIPLICACION  shift and go to state 11
+    DIVISION        shift and go to state 12
 
 
 state 14
 
-    (7) declaracion -> tipo lista_variables puntocoma .
+    (8) expression -> NOMBRE .
 
-    const           reduce using rule 7 (declaracion -> tipo lista_variables puntocoma .)
-    var             reduce using rule 7 (declaracion -> tipo lista_variables puntocoma .)
-    FIN             reduce using rule 7 (declaracion -> tipo lista_variables puntocoma .)
+    DOS_PUNTOS      reduce using rule 8 (expression -> NOMBRE .)
+    SUMA            reduce using rule 8 (expression -> NOMBRE .)
+    RESTA           reduce using rule 8 (expression -> NOMBRE .)
+    MULTIPLICACION  reduce using rule 8 (expression -> NOMBRE .)
+    DIVISION        reduce using rule 8 (expression -> NOMBRE .)
+    $end            reduce using rule 8 (expression -> NOMBRE .)
+    DEDENTACION     reduce using rule 8 (expression -> NOMBRE .)
 
 
 state 15
 
-    (10) lista_variables -> lista_variables Coma . ID
+    (11) statement -> MIENTRAS expression . DOS_PUNTOS INDENTACION statement DEDENTACION
+    (3) expression -> expression . SUMA expression
+    (4) expression -> expression . RESTA expression
+    (5) expression -> expression . MULTIPLICACION expression
+    (6) expression -> expression . DIVISION expression
 
-    ID              shift and go to state 16
+    DOS_PUNTOS      shift and go to state 23
+    SUMA            shift and go to state 9
+    RESTA           shift and go to state 10
+    MULTIPLICACION  shift and go to state 11
+    DIVISION        shift and go to state 12
 
 
 state 16
 
-    (10) lista_variables -> lista_variables Coma ID .
+    (12) statement -> MIENTRAS DOS_PUNTOS . error DEDENTACION
 
-    puntocoma       reduce using rule 10 (lista_variables -> lista_variables Coma ID .)
-    Coma            reduce using rule 10 (lista_variables -> lista_variables Coma ID .)
+    error           shift and go to state 24
 
+
+state 17
+
+    (1) statement -> NOMBRE ASIGNACION expression .
+    (3) expression -> expression . SUMA expression
+    (4) expression -> expression . RESTA expression
+    (5) expression -> expression . MULTIPLICACION expression
+    (6) expression -> expression . DIVISION expression
+
+    $end            reduce using rule 1 (statement -> NOMBRE ASIGNACION expression .)
+    DEDENTACION     reduce using rule 1 (statement -> NOMBRE ASIGNACION expression .)
+    SUMA            shift and go to state 9
+    RESTA           shift and go to state 10
+    MULTIPLICACION  shift and go to state 11
+    DIVISION        shift and go to state 12
+
+
+state 18
+
+    (3) expression -> expression SUMA expression .
+    (3) expression -> expression . SUMA expression
+    (4) expression -> expression . RESTA expression
+    (5) expression -> expression . MULTIPLICACION expression
+    (6) expression -> expression . DIVISION expression
+
+  ! shift/reduce conflict for SUMA resolved as shift
+  ! shift/reduce conflict for RESTA resolved as shift
+  ! shift/reduce conflict for MULTIPLICACION resolved as shift
+  ! shift/reduce conflict for DIVISION resolved as shift
+    $end            reduce using rule 3 (expression -> expression SUMA expression .)
+    DOS_PUNTOS      reduce using rule 3 (expression -> expression SUMA expression .)
+    DEDENTACION     reduce using rule 3 (expression -> expression SUMA expression .)
+    SUMA            shift and go to state 9
+    RESTA           shift and go to state 10
+    MULTIPLICACION  shift and go to state 11
+    DIVISION        shift and go to state 12
+
+  ! SUMA            [ reduce using rule 3 (expression -> expression SUMA expression .) ]
+  ! RESTA           [ reduce using rule 3 (expression -> expression SUMA expression .) ]
+  ! MULTIPLICACION  [ reduce using rule 3 (expression -> expression SUMA expression .) ]
+  ! DIVISION        [ reduce using rule 3 (expression -> expression SUMA expression .) ]
+
+
+state 19
+
+    (4) expression -> expression RESTA expression .
+    (3) expression -> expression . SUMA expression
+    (4) expression -> expression . RESTA expression
+    (5) expression -> expression . MULTIPLICACION expression
+    (6) expression -> expression . DIVISION expression
+
+  ! shift/reduce conflict for SUMA resolved as shift
+  ! shift/reduce conflict for RESTA resolved as shift
+  ! shift/reduce conflict for MULTIPLICACION resolved as shift
+  ! shift/reduce conflict for DIVISION resolved as shift
+    $end            reduce using rule 4 (expression -> expression RESTA expression .)
+    DOS_PUNTOS      reduce using rule 4 (expression -> expression RESTA expression .)
+    DEDENTACION     reduce using rule 4 (expression -> expression RESTA expression .)
+    SUMA            shift and go to state 9
+    RESTA           shift and go to state 10
+    MULTIPLICACION  shift and go to state 11
+    DIVISION        shift and go to state 12
+
+  ! SUMA            [ reduce using rule 4 (expression -> expression RESTA expression .) ]
+  ! RESTA           [ reduce using rule 4 (expression -> expression RESTA expression .) ]
+  ! MULTIPLICACION  [ reduce using rule 4 (expression -> expression RESTA expression .) ]
+  ! DIVISION        [ reduce using rule 4 (expression -> expression RESTA expression .) ]
+
+
+state 20
+
+    (5) expression -> expression MULTIPLICACION expression .
+    (3) expression -> expression . SUMA expression
+    (4) expression -> expression . RESTA expression
+    (5) expression -> expression . MULTIPLICACION expression
+    (6) expression -> expression . DIVISION expression
+
+  ! shift/reduce conflict for SUMA resolved as shift
+  ! shift/reduce conflict for RESTA resolved as shift
+  ! shift/reduce conflict for MULTIPLICACION resolved as shift
+  ! shift/reduce conflict for DIVISION resolved as shift
+    $end            reduce using rule 5 (expression -> expression MULTIPLICACION expression .)
+    DOS_PUNTOS      reduce using rule 5 (expression -> expression MULTIPLICACION expression .)
+    DEDENTACION     reduce using rule 5 (expression -> expression MULTIPLICACION expression .)
+    SUMA            shift and go to state 9
+    RESTA           shift and go to state 10
+    MULTIPLICACION  shift and go to state 11
+    DIVISION        shift and go to state 12
+
+  ! SUMA            [ reduce using rule 5 (expression -> expression MULTIPLICACION expression .) ]
+  ! RESTA           [ reduce using rule 5 (expression -> expression MULTIPLICACION expression .) ]
+  ! MULTIPLICACION  [ reduce using rule 5 (expression -> expression MULTIPLICACION expression .) ]
+  ! DIVISION        [ reduce using rule 5 (expression -> expression MULTIPLICACION expression .) ]
+
+
+state 21
+
+    (6) expression -> expression DIVISION expression .
+    (3) expression -> expression . SUMA expression
+    (4) expression -> expression . RESTA expression
+    (5) expression -> expression . MULTIPLICACION expression
+    (6) expression -> expression . DIVISION expression
+
+  ! shift/reduce conflict for SUMA resolved as shift
+  ! shift/reduce conflict for RESTA resolved as shift
+  ! shift/reduce conflict for MULTIPLICACION resolved as shift
+  ! shift/reduce conflict for DIVISION resolved as shift
+    $end            reduce using rule 6 (expression -> expression DIVISION expression .)
+    DOS_PUNTOS      reduce using rule 6 (expression -> expression DIVISION expression .)
+    DEDENTACION     reduce using rule 6 (expression -> expression DIVISION expression .)
+    SUMA            shift and go to state 9
+    RESTA           shift and go to state 10
+    MULTIPLICACION  shift and go to state 11
+    DIVISION        shift and go to state 12
+
+  ! SUMA            [ reduce using rule 6 (expression -> expression DIVISION expression .) ]
+  ! RESTA           [ reduce using rule 6 (expression -> expression DIVISION expression .) ]
+  ! MULTIPLICACION  [ reduce using rule 6 (expression -> expression DIVISION expression .) ]
+  ! DIVISION        [ reduce using rule 6 (expression -> expression DIVISION expression .) ]
+
+
+state 22
+
+    (9) statement -> SI expression DOS_PUNTOS . INDENTACION statement DEDENTACION
+    (10) statement -> SI expression DOS_PUNTOS . INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+
+    INDENTACION     shift and go to state 25
+
+
+state 23
+
+    (11) statement -> MIENTRAS expression DOS_PUNTOS . INDENTACION statement DEDENTACION
+
+    INDENTACION     shift and go to state 26
+
+
+state 24
+
+    (12) statement -> MIENTRAS DOS_PUNTOS error . DEDENTACION
+
+    DEDENTACION     shift and go to state 27
+
+
+state 25
+
+    (9) statement -> SI expression DOS_PUNTOS INDENTACION . statement DEDENTACION
+    (10) statement -> SI expression DOS_PUNTOS INDENTACION . statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+    (1) statement -> . NOMBRE ASIGNACION expression
+    (2) statement -> . expression
+    (9) statement -> . SI expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (10) statement -> . SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+    (11) statement -> . MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (12) statement -> . MIENTRAS DOS_PUNTOS error DEDENTACION
+    (13) statement -> . error
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
+
+    NOMBRE          shift and go to state 2
+    SI              shift and go to state 4
+    MIENTRAS        shift and go to state 5
+    error           shift and go to state 6
+    NUMERO          shift and go to state 7
+
+    expression                     shift and go to state 3
+    statement                      shift and go to state 28
+
+state 26
+
+    (11) statement -> MIENTRAS expression DOS_PUNTOS INDENTACION . statement DEDENTACION
+    (1) statement -> . NOMBRE ASIGNACION expression
+    (2) statement -> . expression
+    (9) statement -> . SI expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (10) statement -> . SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+    (11) statement -> . MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (12) statement -> . MIENTRAS DOS_PUNTOS error DEDENTACION
+    (13) statement -> . error
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
+
+    NOMBRE          shift and go to state 2
+    SI              shift and go to state 4
+    MIENTRAS        shift and go to state 5
+    error           shift and go to state 6
+    NUMERO          shift and go to state 7
+
+    expression                     shift and go to state 3
+    statement                      shift and go to state 29
+
+state 27
+
+    (12) statement -> MIENTRAS DOS_PUNTOS error DEDENTACION .
+
+    $end            reduce using rule 12 (statement -> MIENTRAS DOS_PUNTOS error DEDENTACION .)
+    DEDENTACION     reduce using rule 12 (statement -> MIENTRAS DOS_PUNTOS error DEDENTACION .)
+
+
+state 28
+
+    (9) statement -> SI expression DOS_PUNTOS INDENTACION statement . DEDENTACION
+    (10) statement -> SI expression DOS_PUNTOS INDENTACION statement . DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+
+    DEDENTACION     shift and go to state 30
+
+
+state 29
+
+    (11) statement -> MIENTRAS expression DOS_PUNTOS INDENTACION statement . DEDENTACION
+
+    DEDENTACION     shift and go to state 31
+
+
+state 30
+
+    (9) statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION .
+    (10) statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION . SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+
+    $end            reduce using rule 9 (statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION .)
+    DEDENTACION     reduce using rule 9 (statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION .)
+    SINO            shift and go to state 32
+
+
+state 31
+
+    (11) statement -> MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION .
+
+    $end            reduce using rule 11 (statement -> MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION .)
+    DEDENTACION     reduce using rule 11 (statement -> MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION .)
+
+
+state 32
+
+    (10) statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO . DOS_PUNTOS INDENTACION statement DEDENTACION
+
+    DOS_PUNTOS      shift and go to state 33
+
+
+state 33
+
+    (10) statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS . INDENTACION statement DEDENTACION
+
+    INDENTACION     shift and go to state 34
+
+
+state 34
+
+    (10) statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION . statement DEDENTACION
+    (1) statement -> . NOMBRE ASIGNACION expression
+    (2) statement -> . expression
+    (9) statement -> . SI expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (10) statement -> . SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION
+    (11) statement -> . MIENTRAS expression DOS_PUNTOS INDENTACION statement DEDENTACION
+    (12) statement -> . MIENTRAS DOS_PUNTOS error DEDENTACION
+    (13) statement -> . error
+    (3) expression -> . expression SUMA expression
+    (4) expression -> . expression RESTA expression
+    (5) expression -> . expression MULTIPLICACION expression
+    (6) expression -> . expression DIVISION expression
+    (7) expression -> . NUMERO
+    (8) expression -> . NOMBRE
+
+    NOMBRE          shift and go to state 2
+    SI              shift and go to state 4
+    MIENTRAS        shift and go to state 5
+    error           shift and go to state 6
+    NUMERO          shift and go to state 7
+
+    expression                     shift and go to state 3
+    statement                      shift and go to state 35
+
+state 35
+
+    (10) statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement . DEDENTACION
+
+    DEDENTACION     shift and go to state 36
+
+
+state 36
+
+    (10) statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION .
+
+    $end            reduce using rule 10 (statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION .)
+    DEDENTACION     reduce using rule 10 (statement -> SI expression DOS_PUNTOS INDENTACION statement DEDENTACION SINO DOS_PUNTOS INDENTACION statement DEDENTACION .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for SUMA in state 18 resolved as shift
+WARNING: shift/reduce conflict for RESTA in state 18 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLICACION in state 18 resolved as shift
+WARNING: shift/reduce conflict for DIVISION in state 18 resolved as shift
+WARNING: shift/reduce conflict for SUMA in state 19 resolved as shift
+WARNING: shift/reduce conflict for RESTA in state 19 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLICACION in state 19 resolved as shift
+WARNING: shift/reduce conflict for DIVISION in state 19 resolved as shift
+WARNING: shift/reduce conflict for SUMA in state 20 resolved as shift
+WARNING: shift/reduce conflict for RESTA in state 20 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLICACION in state 20 resolved as shift
+WARNING: shift/reduce conflict for DIVISION in state 20 resolved as shift
+WARNING: shift/reduce conflict for SUMA in state 21 resolved as shift
+WARNING: shift/reduce conflict for RESTA in state 21 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLICACION in state 21 resolved as shift
+WARNING: shift/reduce conflict for DIVISION in state 21 resolved as shift
